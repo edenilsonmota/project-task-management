@@ -1,9 +1,13 @@
 <?php
 
 namespace Task;
+
+require("../../config.php");
+
+
 use DB\Conn;
-use PDO;
 use PDOException;
+
 
 class TaskController
 {   
@@ -13,31 +17,16 @@ class TaskController
      *
      * @return array
      */
-    public function index() : array
+    public function index()
     {
         try{
             $tasks = (new Conn())->getAll();
-            return $tasks;
+            var_dump($tasks);
         }catch(PDOException $exception){
             throw new PDOException($exception->getMessage());
         }
     }
 
-    /**
-     * Método para exibir uma task específico pelo ID
-     *
-     * @param int $id
-     * @return array
-     */
-    public function one (int $id): array
-    {
-        try{
-            $task = (new Conn())->getOneByKey($id);
-        return $task;
-        }catch(PDOException $exception){
-            throw new PDOException($exception->getMessage());
-        }
-    }
 
     /**
      * Método para adicionar uma nova task
@@ -50,7 +39,7 @@ class TaskController
     {
         try{
             (new Conn())->insert($titulo, $descricao);
-            return "Inserção de tarefa feita com sucesso!";
+            echo json_encode(['success' => true, 'message' => 'Tarefa adicionada com sucesso.']);
         }catch(PDOException $exception){
             throw new PDOException($exception->getMessage());
         }
@@ -88,6 +77,4 @@ class TaskController
             throw new PDOException($exception->getMessage());
         }
     }
-
-    
 }
