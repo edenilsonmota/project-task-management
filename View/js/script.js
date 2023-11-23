@@ -37,16 +37,63 @@ $(document).ready(function () {
     });
 
     // Função para carregar a lista de tarefas
-    function loadTaskList() {
-        $.ajax({
-            type: 'GET',
-            url: '../Controller/Task/TaskController.php?action=index',
-            success: function (response) {
-                $('#task-list').html(response);
-            },
-            error: function () {
-                alert('Erro ao carregar a lista de tarefas.');
-            }
-        });
-    }
+// Função para carregar a lista de tarefas
+function loadTaskList() {
+    $.ajax({
+        type: 'GET',
+        url: '../Controller/Task/TaskController.php?action=index',
+        success: function (response) {
+            // Caso que o 'response' seja um JSON
+            var data = JSON.parse(response);
+
+            // Seletor do elemento onde será adicionado a  tabela
+            var tableContainer = $('#task-list');
+
+            // Criar a tabela
+            var table = $('<table>').addClass('table'); // class table
+
+            // Cabeçalho da tabela
+            var thead = $('<thead>').append(
+                $('<tr>').html('<th>ID</th><th>Título</th><th>Descrição</th><th>Ações</th>')
+            );
+            table.append(thead);
+
+            // Corpo da tabela
+            var tbody = $('<tbody>');
+            $.each(data, function (index, task) {
+                var row = $('<tr>').html(
+                    '<td>' + task.id + '</td>' +
+                    '<td>' + task.titulo + '</td>' +
+                    '<td>' + task.descricao + '</td>' +
+                    '<td>' +
+                        '<button onclick="updateTask(' + task.id + ')">Editar</button>' +
+                        '<button onclick="deleteTask(' + task.id + ')">Deletar</button>' +
+                    '</td>'
+                );
+                tbody.append(row);
+            });
+
+            table.append(tbody);
+
+            // Limpar e adicionar a tabela ao contêiner
+            tableContainer.html(table);
+        },
+        error: function () {
+            alert('Erro ao carregar a lista de tarefas.');
+        }
+    });
+}
+
+// Função de exemplo para updateTask
+function updateTask(taskId) {
+    // Implemente a lógica de atualização aqui
+    console.log('Update task with ID: ' + taskId);
+}
+
+// Função de exemplo para deleteTask
+function deleteTask(taskId) {
+    // Implemente a lógica de exclusão aqui
+    console.log('Delete task with ID: ' + taskId);
+}
+
 });

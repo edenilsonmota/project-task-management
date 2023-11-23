@@ -17,11 +17,11 @@ class TaskController
      *
      * @return array
      */
-    public function index()
+    public function index() : void
     {
         try{
             $tasks = (new Conn())->getAll();
-            var_dump($tasks);
+                echo json_encode($tasks);
         }catch(PDOException $exception){
             throw new PDOException($exception->getMessage());
         }
