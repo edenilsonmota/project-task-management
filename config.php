@@ -13,7 +13,7 @@ define("DIR_PROJECT", 'crud-tarefas');  //pasta do projeto
 
 //carregar autoload
 if(file_exists('autoload.php')){
-    require 'autoloadd.php';
+    require 'autoload.php';
 }else{
     throw new Exception('Erro: O arquivo "autoload.php" não foi encontrado.');
 }
