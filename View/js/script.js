@@ -5,10 +5,10 @@ $(document).ready(function () {
     loadTaskList();
 
     // Exibir formulário create ao clicar no botão
-    $('#add-task-button').click(function () {
+    $('#add-task-button').one('click', function () {
         var form = $('<form>');
         form.append('<span>Criar tarefa</span><br>');
-
+    
         form.append('<label for="titulo">Título:</label>');
         form.append('<input type="text" id="titulo">');
         form.append('<br>');
@@ -17,16 +17,19 @@ $(document).ready(function () {
         form.append('<br>');
         form.append('<button id="save-btn">Salvar</button>');
         form.append('<button id="cancel-btn">Cancelar</button>');
-
+    
         // Adicionar o formulário ao corpo do documento
         $('body').append(form);
-
+    
         // Adicionar evento de clique para o botão de salvar
         form.find('#save-btn').on('click', function () {
             // Chamar a função de atualização com os dados do formulário
             create($('#titulo').val(), $('#descricao').val());
+    
+            // Remover o evento de clique após a primeira execução
+            form.find('#save-btn').off('click');
         });
-
+    
         // Adicionar evento de clique para o botão de cancelar
         form.find('#cancel-btn').on('click', function () {
             // Remover o formulário sem fazer a atualização
@@ -114,7 +117,7 @@ $(document).ready(function () {
     function openEditForm(task) {
         var form = $('<form>');
         form.append('<span>Editar Tarefa</span><br>');
-
+    
         form.append('<label for="titulo">Título:</label>');
         form.append('<input type="text" id="titulo" value="' + task.titulo + '">');
         form.append('<br>');
@@ -123,23 +126,26 @@ $(document).ready(function () {
         form.append('<br>');
         form.append('<button id="update-btn">Salvar</button>');
         form.append('<button id="cancel-btn">Cancelar</button>');
-
+    
         // Adicionar o formulário ao corpo do documento
         $('body').append(form);
-
+    
         // Adicionar evento de clique para o botão de atualização
-        form.find('#update-btn').on('click', function () {
+        form.find('#update-btn').one('click', function () {
             // Chamar a função de atualização com os dados do formulário
             updateTask(task.id, $('#titulo').val(), $('#descricao').val());
+    
+            // Remover o evento de clique após a primeira execução
+            form.find('#update-btn').off('click');
         });
-
+    
         // Adicionar evento de clique para o botão de cancelar
         form.find('#cancel-btn').on('click', function () {
-
             // Remover o formulário sem fazer a atualização
             form.remove();
         });
     }
+    
 
     //Update Task
     function updateTask(id, titulo, descricao) {
