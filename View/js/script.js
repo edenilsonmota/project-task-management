@@ -4,38 +4,53 @@ $(document).ready(function () {
     // Carregar a lista de tarefas ao carregar a página
     loadTaskList();
 
+
     // Exibir formulário create ao clicar no botão
-    $('#add-task-button').one('click', function () {
-        var form = $('<form>');
-        form.append('<span>Criar tarefa</span><br>');
+    $('#add-task-button').on('click', function () {
+        // Cria um contêiner modal do Bootstrap
+        var container = $('<div>').addClass('modal fade');
+        var dialog = $('<div>').addClass('modal-dialog');
+        var content = $('<div>').addClass('modal-content');
+    
+        // Cria o formulário dentro do modal
+        var form = $('<form>').addClass('centered-form');
+        form.append('<span class="modal-title">Criar tarefa</span><br>');
     
         form.append('<label for="titulo">Título:</label>');
-        form.append('<input type="text" id="titulo">');
+        form.append('<input type="text" id="titulo" class="form-control">');
         form.append('<br>');
         form.append('<label for="descricao">Descrição:</label>');
-        form.append('<textarea id="descricao"></textarea>');
+        form.append('<textarea id="descricao" class="form-control"></textarea>');
         form.append('<br>');
-        form.append('<button id="save-btn">Salvar</button>');
-        form.append('<button id="cancel-btn">Cancelar</button>');
+        form.append('<button id="save-btn" class="btn btn-primary">Salvar</button>');
+        form.append('<button id="cancel-btn" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>');
     
-        // Adicionar o formulário ao corpo do documento
-        $('body').append(form);
+        // Adiciona o formulário ao conteúdo do modal
+        content.append(form);
+        dialog.append(content);
+        container.append(dialog);
+    
+        // Adiciona o modal ao corpo do documento e exibe
+        $('body').append(container);
+        container.modal('show');
     
         // Adicionar evento de clique para o botão de salvar
         form.find('#save-btn').on('click', function () {
-            // Chamar a função de atualização com os dados do formulário
-            create($('#titulo').val(), $('#descricao').val());
+            // Chamar a função de criação com os dados do formulário
+            createTask($('#titulo').val(), $('#descricao').val());
     
-            // Remover o evento de clique após a primeira execução
-            form.find('#save-btn').off('click');
+            // Fechar o modal
+            container.modal('hide');
         });
     
         // Adicionar evento de clique para o botão de cancelar
         form.find('#cancel-btn').on('click', function () {
-            // Remover o formulário sem fazer a atualização
-            form.remove();
+            // Fechar o modal
+            container.modal('hide');
         });
     });
+    
+    
 
     // Função para carregar a lista de tarefas
     function loadTaskList() {
@@ -66,8 +81,8 @@ $(document).ready(function () {
                         '<td>' + task.titulo + '</td>' +
                         '<td>' + task.descricao + '</td>' +
                         '<td>' +
-                        '<button class="edit-btn">Editar</button>' +
-                        '<button class="delete-btn">Deletar</button>' +
+                        '<button class="btn btn-success edit-btn">Editar</button>' +
+                        '<button class="btn btn-danger delete-btn">Deletar</button>' +
                         '</td>'
                     );
                     tbody.append(row);
@@ -95,7 +110,7 @@ $(document).ready(function () {
     }
 
     //create task
-    function create(titulo, descricao) {
+    function createTask(titulo, descricao) {
         $.ajax({
             type: 'POST',
             url: '../Controller/Task/TaskController.php?action=create',
@@ -115,36 +130,50 @@ $(document).ready(function () {
     
     //Form update task
     function openEditForm(task) {
-        var form = $('<form>');
-        form.append('<span>Editar Tarefa</span><br>');
+        // Cria um contêiner modal do Bootstrap
+        var container = $('<div>').addClass('modal fade');
+        var dialog = $('<div>').addClass('modal-dialog');
+        var content = $('<div>').addClass('modal-content');
+    
+        // Cria o formulário dentro do modal
+        var form = $('<form>').addClass('centered-form');
+        form.append('<span class="modal-title">Editar Tarefa</span><br>');
     
         form.append('<label for="titulo">Título:</label>');
-        form.append('<input type="text" id="titulo" value="' + task.titulo + '">');
+        form.append('<input type="text" id="titulo" value="' + task.titulo + '" class="form-control">');
         form.append('<br>');
         form.append('<label for="descricao">Descrição:</label>');
-        form.append('<textarea id="descricao">' + task.descricao + '</textarea>');
+        form.append('<textarea id="descricao" class="form-control">' + task.descricao + '</textarea>');
         form.append('<br>');
-        form.append('<button id="update-btn">Salvar</button>');
-        form.append('<button id="cancel-btn">Cancelar</button>');
+        form.append('<button id="update-btn" class="btn btn-primary">Salvar</button>');
+        form.append('<button id="cancel-btn" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>');
     
-        // Adicionar o formulário ao corpo do documento
-        $('body').append(form);
+        // Adiciona o formulário ao conteúdo do modal
+        content.append(form);
+        dialog.append(content);
+        container.append(dialog);
+    
+        // Adiciona o modal ao corpo do documento e exibe
+        $('body').append(container);
+        container.modal('show');
     
         // Adicionar evento de clique para o botão de atualização
         form.find('#update-btn').one('click', function () {
             // Chamar a função de atualização com os dados do formulário
             updateTask(task.id, $('#titulo').val(), $('#descricao').val());
     
-            // Remover o evento de clique após a primeira execução
-            form.find('#update-btn').off('click');
+            // Fechar o modal
+            container.modal('hide');
         });
     
         // Adicionar evento de clique para o botão de cancelar
         form.find('#cancel-btn').on('click', function () {
-            // Remover o formulário sem fazer a atualização
-            form.remove();
+            // Fechar o modal
+            container.modal('hide');
         });
     }
+    
+    
     
 
     //Update Task
