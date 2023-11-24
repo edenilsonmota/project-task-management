@@ -90,31 +90,32 @@ switch ($action) {
         $taskController->index();
         break;
     case 'create':
-        // Verifica se os parâmetros necessários foram fornecidos
-        if(isset($_POST['titulo']) && isset($_POST['descricao'])) {
+        // Verifica se os parâmetros necessários foram fornecidos e não estão vazios
+        if (!empty($_POST['titulo']) && !empty($_POST['descricao'])) {
             // Chama a função create com os parâmetros fornecidos
             $taskController->create($_POST['titulo'], $_POST['descricao']);
-        }else{
-            // Se os parâmetros estão faltando, retorna uma mensagem de erro
-            echo json_encode(['success' => false, 'message' => 'Parâmetros ausentes.']);
+        } else {
+            // Se os parâmetros estão faltando ou vazios, retorna uma mensagem de erro
+            echo json_encode(['success' => false, 'message' => 'Parâmetros ausentes ou vazios.']);
         }
         break;
-        case 'update':
-            // Verifica se os parâmetros necessários foram fornecidos
-            if(isset($_POST['id']) && isset($_POST['titulo']) && isset($_POST['descricao'])) {
-                // Chama a função update com os parâmetros fornecidos
-                $taskController->update($_POST['id'], $_POST['titulo'], $_POST['descricao']);
-            } else {
-                // Se os parâmetros estão faltando, retorna uma mensagem de erro
-                echo json_encode(['success' => false, 'message' => 'Parâmetros ausentes para a atualização.']);
-            }
-            break;
-        case 'delete':
-            if(isset($_POST['id'])){
-                $taskController->delete($_POST['id']);
-            }else{
-                echo json_encode(['success' => false, 'message' => 'Falha ao deletar tarefa.']);
-            }
+    case 'update':
+        // Verifica se os parâmetros necessários foram fornecidos
+        if (isset($_POST['id']) && !empty($_POST['titulo']) && !empty($_POST['descricao'])) {
+            // Chama a função update com os parâmetros fornecidos
+            $taskController->update($_POST['id'], $_POST['titulo'], $_POST['descricao']);
+        } else {
+            // Se os parâmetros estão faltando ou vazios, retorna uma mensagem de erro
+            echo json_encode(['success' => false, 'message' => 'Parâmetros ausentes ou vazios para a atualização.']);
+        }
+        break;
+    case 'delete':
+        if (isset($_POST['id'])) {
+            $taskController->delete($_POST['id']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Falha ao deletar tarefa.']);
+        }
+        break;
     default:
         echo 'erro';
         break;
