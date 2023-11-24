@@ -108,7 +108,13 @@ switch ($action) {
                 // Se os parâmetros estão faltando, retorna uma mensagem de erro
                 echo json_encode(['success' => false, 'message' => 'Parâmetros ausentes para a atualização.']);
             }
-            break;  
+            break;
+        case 'delete':
+            if(isset($_POST['id'])){
+                $taskController->delete($_POST['id']);
+            }else{
+                echo json_encode(['success' => false, 'message' => 'Falha ao deletar tarefa.']);
+            }
     default:
         echo 'erro';
         break;

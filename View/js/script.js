@@ -43,7 +43,7 @@ function loadTaskList() {
         type: 'GET',
         url: '../Controller/Task/TaskController.php?action=index',
         success: function (response) {
-            // Caso que o 'response' seja um JSON
+
             var data = JSON.parse(response);
 
             // Seletor do elemento onde será adicionado a tabela
@@ -95,7 +95,6 @@ function loadTaskList() {
 }
 
 function openEditForm(task) {
-    // Exemplo de formulário de edição
     var form = $('<form>');
     form.append('<label for="titulo">Título:</label>');
     form.append('<input type="text" id="titulo" value="' + task.titulo + '">');
@@ -144,9 +143,27 @@ function updateTask(id, titulo, descricao) {
 
 
 // Função de exemplo para deleteTask
-function deleteTask(taskId) {
-    // Implemente a lógica de exclusão aqui
-    console.log(taskId);
+function deleteTask(id) {
+    // Confirmar novamente antes da exclusão
+    var confirmDelete = confirm("Tem certeza que deseja excluir esta tarefa?");
+    if (!confirmDelete) {
+        return;
+    }
+
+    // Enviar a solicitação AJAX para excluir a tarefa
+    $.ajax({
+        type: 'POST',
+        url: '../Controller/Task/TaskController.php?action=delete',
+        data: { id: id },
+        success: function (response) {
+            // Recarregar a lista de tarefas após a exclusão
+            loadTaskList();
+        },
+        error: function () {
+            alert('Erro ao excluir tarefa.');
+        }
+    });
 }
+
 
 });
