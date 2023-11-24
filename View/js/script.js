@@ -65,24 +65,24 @@ $(document).ready(function () {
                 var tableContainer = $('#task-list');
 
                 // Criar a tabela
-                var table = $('<table>').addClass('table'); // class table
+                var table = $('<table>').addClass('table table-bordered w-100'); // class table
 
                 // Cabeçalho da tabela
-                var thead = $('<thead>').append(
-                    $('<tr>').html('<th style="display: none;">ID</th><th>Título</th><th>Descrição</th><th>Ações</th>')
+                var thead = $('<thead bg-primary text-white>').append(
+                    $('<tr>').html('<th style="display: none;">ID</th><th class="text-center w-25">Título</th><th class="text-center w-75">Descrição</th><th class="text-center">Ações</th>')
                 );
                 table.append(thead);
 
                 // Corpo da tabela
                 var tbody = $('<tbody>');
                 $.each(data, function (index, task) {
-                    var row = $('<tr>').html(
+                    var row = $('<tr class="text-nowrap">').html(
                         '<td style="display: none;">' + task.id + '</td>' +
-                        '<td>' + task.titulo + '</td>' +
-                        '<td>' + task.descricao + '</td>' +
-                        '<td>' +
-                        '<button class="btn btn-success edit-btn">Editar</button>' +
-                        '<button class="btn btn-danger delete-btn">Deletar</button>' +
+                        '<td class="text-center">' + task.titulo + '</td>' +
+                        '<td class="text-center">' + task.descricao + '</td>' +
+                        '<td class="text-center d-flex justify-content-between">' +
+                        '<button class="btn btn-success mx-1 edit-btn">Editar</button>' +
+                        '<button class="btn btn-danger mx-1 delete-btn">Deletar</button>' +
                         '</td>'
                     );
                     tbody.append(row);
