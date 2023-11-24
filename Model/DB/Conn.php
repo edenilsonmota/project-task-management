@@ -39,7 +39,7 @@ class Conn
      */
     public function getAll() : array
     {
-        $query = $this->conexao->query("SELECT * FROM task");
+        $query = $this->conexao->query("SELECT * FROM task ORDER BY id DESC");
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
