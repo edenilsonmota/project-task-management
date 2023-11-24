@@ -92,13 +92,23 @@ switch ($action) {
     case 'create':
         // Verifica se os parâmetros necessários foram fornecidos
         if(isset($_POST['task_name']) && isset($_POST['task_description'])) {
-            // Chama a função addTask com os parâmetros fornecidos
+            // Chama a função create com os parâmetros fornecidos
             $taskController->create($_POST['task_name'], $_POST['task_description']);
         }else{
             // Se os parâmetros estão faltando, retorna uma mensagem de erro
             echo json_encode(['success' => false, 'message' => 'Parâmetros ausentes.']);
         }
         break;
+        case 'update':
+            // Verifica se os parâmetros necessários foram fornecidos
+            if(isset($_POST['id']) && isset($_POST['titulo']) && isset($_POST['descricao'])) {
+                // Chama a função update com os parâmetros fornecidos
+                $taskController->update($_POST['id'], $_POST['titulo'], $_POST['descricao']);
+            } else {
+                // Se os parâmetros estão faltando, retorna uma mensagem de erro
+                echo json_encode(['success' => false, 'message' => 'Parâmetros ausentes para a atualização.']);
+            }
+            break;  
     default:
         echo 'erro';
         break;

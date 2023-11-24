@@ -59,7 +59,7 @@
                 <button id="cancel-task-button">Cancelar</button>
             </form>
         </div>
-    <script src="../Controller/js/script.js"></script>
+    <script src="../View/js/script.js"></script>
 
 </body>
 
