@@ -51,7 +51,7 @@ $(document).ready(function () {
 
                 // Cabeçalho da tabela
                 var thead = $('<thead>').append(
-                    $('<tr>').html('<th>ID</th><th>Título</th><th>Descrição</th><th>Ações</th>')
+                    $('<tr>').html('<th style="display: none;">ID</th><th>Título</th><th>Descrição</th><th>Ações</th>')
                 );
                 table.append(thead);
 
@@ -59,7 +59,7 @@ $(document).ready(function () {
                 var tbody = $('<tbody>');
                 $.each(data, function (index, task) {
                     var row = $('<tr>').html(
-                        '<td>' + task.id + '</td>' +
+                        '<td style="display: none;">' + task.id + '</td>' +
                         '<td>' + task.titulo + '</td>' +
                         '<td>' + task.descricao + '</td>' +
                         '<td>' +
