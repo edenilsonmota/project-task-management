@@ -1,6 +1,6 @@
 # crud-tarefas
 
-Este é um projeto de CRUD de tarefas, desenvolvido usando a arquitetura MVC (Model-View-Controller) e tecnologias como Bootstrap, JavaScript, jQuery (Ajax), PHP e MySQL.
+Este é um projeto de CRUD de tarefas, foi feito como desafio proposto pela empresa Inforgeneses, desenvolvido usando a arquitetura MVC (Model-View-Controller) e tecnologias como Bootstrap, JavaScript, jQuery (Ajax), PHP e MySQL.
 
 ## Pré-requisitos
 
