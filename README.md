@@ -14,27 +14,28 @@ Este é um projeto de CRUD de tarefas, foi feito como desafio proposto pela empr
 2. Importar base de dados com backup.sql(OBRIGATORIO)
 
     ```bash
-    cd /LOCAL_SERVIDOR/crud-tarefas
+    cd /LOCAL_SERVIDOR/
     mysql -u USUARIO -p < backup.sql
     ```
 
-3. No arquivo config.php, alterar USER, PASS, DB, HOST de acordo com suas configurações(OBRIGATORIO).
+3. No arquivo App/Config/Database.php e App/Config/config.php, alterar $user, $pass, $db_name, $host de acordo com suas configurações(OBRIGATORIO).
 
    ```php
-    define("HOST", 'localhost');
-    define("DB", 'SEU BANCO DE DADOS');
-    define("USER", 'SEU USUARIO SQL');
-    define("PASS", 'SUA SENHA');
+    //Database.php
+    private $host = 'localhost';
+    private $db_name = 'system_task';
+    private $user = 'root';
+    private $pass = '12345';
+    protected $conn;
 
-    define("DS", DIRECTORY_SEPARATOR); //separador
-    define("DIR_APP", __DIR__); //raiz
-    define("DIR_PROJECT", 'crud-tarefas');  //pasta do projeto
+    //config.php
+    //nome do projeto
+    define("PROJECT_NAME", "system-task");
    ```
-
-- Obs: Caso necessario pode alterar o nome do projeto no DIR_PROJECT(OPCIONAL).
 
 ## Funcionalidades
 
+- Login por usuario.
 - Criação, leitura, atualização e exclusão de tarefas.
 - Interface responsiva usando Bootstrap.
 - Comunicação assíncrona com o servidor usando jQuery Ajax.
