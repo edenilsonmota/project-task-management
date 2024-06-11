@@ -6,15 +6,31 @@ error_reporting(E_ALL); */
 //carregar constantes
 require __DIR__ . '/App/Config/config.php';
 
-//Iniciar sessao:
-session_start();
-//session_unset();
+// Iniciar sessão se não estiver ativa
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+// Função para gerar um token CSRF
+function generateCsrfToken() {
+    return bin2hex(random_bytes(32));
+  }
+  
+  // Verificar se o token CSRF já existe na sessão, senão gerar um novo
+  if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = generateCsrfToken();
+  }
+
+/* echo "Index:";
+var_dump($_SESSION);die; */
+
+
 
 if(empty($_SESSION['user']) && empty($_SESSION['pass']) && $_SESSION['status'] !== 'LOGADO'){
-    require DOMAIN_PATH . '/App/View/login.php';
-    //limpar variaveis da sessao
+    // Limpar variáveis da sessão antes de redirecionar para a página de login
     session_unset();
+    session_destroy();
+    header("Location: " . URL . "App/View/login.php");
 }else{
-    require DOMAIN_PATH . '/App/View/index.php';
+    header("Location: " . URL . "App/View/home.php");
 }
 

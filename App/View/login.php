@@ -1,7 +1,26 @@
 <?php
+/* ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL); */
 
-require_once "App/Config/config.php";
-require_once "App/View/includes/header.php";
+require_once "../Config/config.php";
+require_once DOMAIN_PATH . "/App/View/includes/header.php";
+
+
+// Iniciar sessão se não estiver ativa
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
+
+// Função para gerar um token CSRF
+function generateCsrfToken() {
+  return bin2hex(random_bytes(32));
+}
+
+// Verificar se o token CSRF já existe na sessão, senão gerar um novo
+if (empty($_SESSION['csrf_token'])) {
+  $_SESSION['csrf_token'] = generateCsrfToken();
+}
 ?>
 
 <style>
@@ -109,7 +128,7 @@ require_once "App/View/includes/header.php";
 <!--Container Login-->
 <div class="container-login d-flex align-items-center py-4 bg-body-tertiary">   
 <main class="form-signin w-100 m-auto">
-  <form action="<?=URL?>App/Controller/Login.php" method="POST">
+  <form action="<?=URL?>App/Controller/LoginController.php" method="POST">
 
   <!--Credenciais de teste-->
   <div class="alert alert-primary" role="alert">
@@ -129,10 +148,16 @@ require_once "App/View/includes/header.php";
     
     <!-- Se aviso tiver msg_error, exibir -->
     <?php if($_SESSION['msg_error']){?>  
-      <div class="alert alert-danger" role="alert">
-        <?php echo $_SESSION['msg_error']?>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <?php echo $_SESSION['msg_error']?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     <?php }?>   
+
+    <!-- Campo oculto para o token CSRF -->
+    <?php if (isset($_SESSION['csrf_token'])): ?>
+      <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+    <?php endif; ?>
 
     <button class="btn btn-primary w-100 py-2" type="submit">Entrar</button>
   </form>
@@ -140,4 +165,4 @@ require_once "App/View/includes/header.php";
 
 </div> 
 
-<?php require_once "App/View/includes/footer.php";?>
+<?php require_once DOMAIN_PATH . "/App/View/includes/footer.php";?>

@@ -7,8 +7,5 @@
                 <button id="add-task-button" class="btn btn-primary">Adicionar Tarefa</button>
             </div>
         </div>
-
-
-
         <span id="task-list"></span>
     </div>
