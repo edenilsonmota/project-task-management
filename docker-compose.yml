@@ -1,0 +1,33 @@
+services:
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - mysql
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: task 
+    ports: 
+      - "3306:3306"
+    volumes: 
+      - db_data:/var/lib/mysql
+        
+  php:
+    build:
+      context: ./docker/php
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - mysql
+volumes:
+  db_data:    
