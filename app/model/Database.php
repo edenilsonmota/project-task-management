@@ -1,28 +1,24 @@
 <?php
 namespace app\model;
-use PDO;
-use PDOException;
+use Doctrine\DBAL\DriverManager;
 
 class Database
 {
-  private $host = 'mysql';
-  private $dbname = 'task';
-  private $user = 'admin';
-  private $pass = 'admin';
 
+  private $config = [
+      'dbname'   => 'task',
+      'user'     => 'admin',
+      'password' => 'admin',
+      'host'     => 'mysql',
+      'driver'   => 'pdo_mysql',
+  ];
+
+    /** Connection do QueryBuilder Doctrine
+     * @return \Doctrine\DBAL\Connection
+     */
   public function getConnection()
   {
-      try {
-        $dsn = "mysql:host=" . $this->host . ";dbname=" . $this->dbname;
-
-        $pdo = new PDO($dsn, $this->user, $this->pass);
-
-        return $pdo;
-        
-      } catch (PDOException $e) {
-
-        echo "Erro de conexão: " . $e->getMessage();
-      }
+     return DriverManager::getConnection($this->config);
   }
 
 }
