@@ -27,22 +27,54 @@ class TaskController
         //Cabeçalho json
         header('Content-Type: application/json');
 
-        $result = $this->model->getAll();
+        $results = $this->model->getAll();
 
-        if(!$result){
-            $result = "Sem tarefas ativas no banco de dados";
+        if(!$results){
+            return json_encode([
+                'message' => 'Nenhum registro encontrado.',
+            ]);
         }
 
-        return json_encode($result);
+        return json_encode($results);
     }
 
-    //Retornar tarefa por id
+    /**
+     * Retornar tarefa por id
+     * @return false|string|void
+     */
     public function getById()
     {   
         //Cabeçalho json
         header('Content-Type: application/json');
-        
-        return json_encode($_GET['id']);
+
+        if(!isset($_GET['id']) || empty($_GET['id'])){
+            return json_encode([
+                'error' => 'API ERROR',
+                'message' => 'Adicione o id da tarefa.',
+                'instruction' => 'task?id=1'
+            ]);
+
+        }
+
+        if(!is_numeric($_GET['id'])){
+            return json_encode([
+                'error' => 'API ERROR',
+                'message' => 'Adicione um id do tipo inteiro.',
+                'instruction' => 'task?id=1'
+            ]);
+        }
+
+        $result = $this->model->getById($_GET['id']);
+
+        if(!$result){
+            return json_encode([
+                'message' => 'Nenhum registro encontrado.',
+            ]);
+        }
+
+        //retornar registro
+        return json_encode($result);
+
     }
 
     //criar nova tarefa

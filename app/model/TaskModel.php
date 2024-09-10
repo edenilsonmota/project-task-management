@@ -6,25 +6,36 @@ use PDO;
 
 class TaskModel extends Database
 {
+    private $connection;
+    private $qb;
+
+
+    public function __construct(){
+        //Regastando conexão do Doctrine Query Builder da class pai
+        $this->connection = $this->getConnection();
+        $this->qb = $this->connection->createQueryBuilder();
+    }
     
     /**
-     * Retornar todas as tarefas
+     * Retornar todas as tarefas concluidas ou não
      *
      * @return array
      */
     public function getAll()
     {
-        //resgatar a conexão
-        $conn = $this->getConnection();
-        
-        //retornar somente as tarefas ativas(status 1);
-        $query = "SELECT id, title, description, dateTask, timeTask  FROM task WHERE status = 1";
 
-        $stmt = $conn->prepare($query);
+        $this->qb->select('idTask', 'title', 'description', 'status', 'type', 'dateTimeCreate')
+            ->from('task');
 
-        $stmt->execute();
+        return $this->qb->executeQuery()->fetchAllAssociative();
+    }
 
-        //retornar em array associativo;
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function getById($id){
+        $this->qb->select('idTask', 'title', 'description', 'status', 'type', 'dateTimeCreate')
+            ->from('task')
+            ->where('idTask = :id')
+            ->setParameter('id', $id);
+
+        return $this->qb->executeQuery()->fetchAllAssociative();
     }
 }
