@@ -3,12 +3,12 @@
 namespace app\controller;
 
 use app\model\TaskModel;
-use app\view\TaskView;
 
 
 class TaskController
 {
     private $model;
+    protected $template;
 
 
     function __construct()
@@ -30,9 +30,7 @@ class TaskController
         $results = $this->model->getAll();
 
         if(!$results){
-            return json_encode([
-                'message' => 'Nenhum registro encontrado.',
-            ]);
+            return json_encode(['message' => 'Nenhum registro encontrado.']);
         }
 
         return json_encode($results);
